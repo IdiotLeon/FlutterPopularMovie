@@ -66,16 +66,28 @@ class _MainAppPageState extends State<MainAppPage> {
           return new GestureDetector(
             child: new Card(
               elevation: 5.0,
-              child: new Container(
+              child: Container(
                 alignment: Alignment.center,
                 child: CachedNetworkImage(
                   imageUrl: imageUrl,
                   placeholder: (context, url) => CircularProgressIndicator(),
                   errorWidget: (context, url, error) => new Icon(Icons.error),
+                  fit: BoxFit.fill,
+                  fadeInCurve: Curves.easeIn,
                 ),
+                padding: new EdgeInsets.all(10.0),
+                constraints: BoxConstraints.expand(),
               ),
+              margin: new EdgeInsets.all(5.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              semanticContainer: true,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
             ),
-            onTap: () {},
+            onTap: () {
+              print(movies[index]['overview']);
+            },
           );
         },
       ),
