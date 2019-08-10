@@ -1,8 +1,20 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-void main() => runApp(MainApp());
+const String URL_BASE = "https://api.themoviedb.org";
+const String URL_POPULAR_MOVIE = "/3/movie/popular";
+// const String API_KEY = "?api_key=${DotEnv().env['API_KEY']}";
+const String API_KEY = "?api_key=";
+const String URL_IMAGE_BASE = "https://image.tmdb.org/t/p/original/";
+
+void main() async {
+  await DotEnv().load('.env');
+  runApp(MainApp());
+}
 
 class MainApp extends StatelessWidget {
   @override
@@ -25,7 +37,7 @@ class MainAppPage extends StatefulWidget {
 }
 
 class _MainAppPageState extends State<MainAppPage> {
-  List widgets = [];
+  List movies = [];
 
   @override
   void initState() {
@@ -36,28 +48,71 @@ class _MainAppPageState extends State<MainAppPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Popular Movie"),
-        ),
-        body: ListView.builder(
-          itemCount: widgets.length,
-          itemBuilder: (BuildContext context, int position) {
-            return getRow(position);
-          },
-        ));
+      appBar: AppBar(
+        title: Text("Popular Movie"),
+      ),
+      // body: ListView.builder(
+      //   itemCount: movies['results'].length,
+      //   itemBuilder: (BuildContext context, int position) {
+      //     return getRow(position);
+      //   },
+      // )
+      body: GridView.builder(
+        itemCount: movies.length,
+        gridDelegate:
+            new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        itemBuilder: (BuildContext context, int index) {
+          var imageUrl = URL_IMAGE_BASE + movies[index]['poster_path'];
+          return new GestureDetector(
+            child: new Card(
+              elevation: 5.0,
+              child: Container(
+                alignment: Alignment.center,
+                child: CachedNetworkImage(
+                  imageUrl: imageUrl,
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => new Icon(Icons.error),
+                  fit: BoxFit.fill,
+                  fadeInCurve: Curves.easeIn,
+                ),
+                padding: new EdgeInsets.all(10.0),
+                constraints: BoxConstraints.expand(),
+              ),
+              margin: new EdgeInsets.all(5.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              semanticContainer: true,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+            ),
+            onTap: () {
+              print(movies[index]['overview']);
+            },
+          );
+        },
+      ),
+    );
   }
 
   Widget getRow(int i) {
-    return Padding(
-        padding: EdgeInsets.all(10.0),
-        child: Text("Row ${widgets[i]["title"]}"));
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+      Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Text("Row ${movies[i]["title"]}")),
+      Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Text("Row ${movies[i]["overview"]}")),
+    ]);
   }
 
   loadData() async {
-    String dataUrl = "https://jsonplaceholder.typicode.com/posts";
+    String dataUrl = URL_BASE +
+        URL_POPULAR_MOVIE +
+        API_KEY +
+        DotEnv().env['API_KEY_MOVIE_DB'];
     http.Response response = await http.get(dataUrl);
     setState(() {
-      widgets = json.decode(response.body);
+      movies = json.decode(response.body)['results'];
     });
   }
 }
