@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.flutter_popular_movie">
+    package="com.idiotleon.flutter.popularmovies">
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
@@ -10,6 +10,8 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="flutter_popular_movie"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyBS-MG5FAL9Qa1Ie--qkZ6bv-l8Xd1n3SA"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

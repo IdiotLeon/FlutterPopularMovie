@@ -32,8 +32,8 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.flutter_popular_movie"
+        // Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        applicationId "com.idiotleon.flutter.popularmovies"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()

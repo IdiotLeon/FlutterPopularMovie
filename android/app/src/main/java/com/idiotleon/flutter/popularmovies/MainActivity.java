@@ -1,4 +1,4 @@
-package com.example.flutter_popular_movie;
+package com.idiotleon.flutter.popularmovies;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
