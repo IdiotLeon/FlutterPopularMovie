@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_popular_movie/models.dart';
 import 'package:flutter_popular_movie/user_profile.dart';
@@ -45,7 +44,23 @@ class PopularMoviesHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(title)),
+        appBar: AppBar(
+          title: Text(title),
+          actions: <Widget>[
+            PopupMenuButton(itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem(
+                  child: IconButton(
+                    icon: Icon(Icons.email),
+                    onPressed: () {
+                      print('Hello World from Menu');
+                    },
+                  ),
+                ),
+              ];
+            }),
+          ],
+        ),
         drawer: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
@@ -69,7 +84,7 @@ class PopularMoviesHomePage extends StatelessWidget {
                   title: Text('Profile'),
                   leading: Icon(Icons.account_circle),
                   onTap: () {
-                    prefix0.Navigator.of(context).pop(); // to close the drawer
+                    Navigator.of(context).pop(); // to close the drawer
                     Navigator.pushNamed(context, UserProfilePage.routeName);
                   }),
             ],
