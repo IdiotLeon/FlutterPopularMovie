@@ -7,6 +7,7 @@ import 'package:flutter_popular_movie/user_profile.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'detail.dart';
+import 'map.dart';
 
 const String URL_BASE = "https://api.themoviedb.org";
 const String URL_POPULAR_MOVIE = "/3/movie/popular";
@@ -31,6 +32,7 @@ class MainApp extends StatelessWidget {
       routes: {
         DetailsPage.routeName: (context) => DetailsPage(),
         UserProfilePage.routeName: (context) => UserProfilePage(),
+        MapPage.routeName: (context) => MapPage(),
       },
     );
   }
@@ -79,6 +81,14 @@ class PopularMoviesHomePage extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.blue,
                 ),
+              ),
+              ListTile(
+                title: Text('Map'),
+                leading: Icon(Icons.map),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.pushNamed(context, MapPage.routeName);
+                },
               ),
               ListTile(
                   title: Text('Profile'),
