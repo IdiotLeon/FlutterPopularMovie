@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_popular_movie/models.dart';
+import 'package:flutter_popular_movie/user_profile.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'detail.dart';
@@ -29,6 +31,7 @@ class MainApp extends StatelessWidget {
       home: PopularMoviesHomePage(title: "Popular Movies"),
       routes: {
         DetailsPage.routeName: (context) => DetailsPage(),
+        UserProfilePage.routeName: (context) => UserProfilePage(),
       },
     );
   }
@@ -43,7 +46,35 @@ class PopularMoviesHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text(title)),
-        drawer: Drawer(),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              UserAccountsDrawerHeader(
+                accountName: Text(
+                  'idiotLeon',
+                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+                ),
+                accountEmail: Text('yanglyu.leon.7@gmail.com',
+                    style:
+                        TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500)),
+                currentAccountPicture: CircleAvatar(
+                  backgroundImage: AssetImage('graphics/ncage_cigar.jpg'),
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                ),
+              ),
+              ListTile(
+                  title: Text('Profile'),
+                  leading: Icon(Icons.account_circle),
+                  onTap: () {
+                    prefix0.Navigator.of(context).pop(); // to close the drawer
+                    Navigator.pushNamed(context, UserProfilePage.routeName);
+                  }),
+            ],
+          ),
+        ),
         body: FutureBuilder<List<ResponseMovieResult>>(
             future: fetchMovies(http.Client()),
             builder: (context, snapshot) {
