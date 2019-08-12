@@ -55,7 +55,7 @@ class MapPageState extends State<MapPage> {
     }
   }
 
-  void _add() {
+  void _add(LatLng location) {
     final int markerCount = markers.length;
 
     if (markerCount == 12) {
@@ -69,8 +69,8 @@ class MapPageState extends State<MapPage> {
     final Marker marker = Marker(
       markerId: markerId,
       position: LatLng(
-        center.latitude + sin(_markerIdCounter * pi / 6.0) / 20.0,
-        center.longitude + cos(_markerIdCounter * pi / 6.0) / 20.0,
+        location.latitude + sin(_markerIdCounter * pi / 6.0) / 20.0,
+        location.longitude + cos(_markerIdCounter * pi / 6.0) / 20.0,
       ),
       infoWindow: InfoWindow(title: markerIdVal, snippet: '*'),
       onTap: () {
@@ -114,6 +114,8 @@ class MapPageState extends State<MapPage> {
           onMapCreated: this.onMapCreated,
           initialCameraPosition: CameraPosition(target: center, zoom: 11.0),
           mapType: currentMapType,
+          markers: Set<Marker>.of(markers.values),
+          onTap: _add,
         ),
         Padding(
           padding: EdgeInsets.all(16.0),
